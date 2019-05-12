@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { spotify } from '../../config';
 import { useSpotifyStore } from '../../store/spotify';
 import queryString from 'query-string';
@@ -53,28 +53,31 @@ export function useSpotifyAuth() {
     setToken(null);
   };
 
-  const authFetch = (input, init = {}) => {
-    if (!token) throw new Error('Not authenticated');
+  const authFetch = useCallback(
+    (input, init = {}) => {
+      if (!token) throw new Error('Not authenticated');
 
-    input = 'https://api.spotify.com' + input;
+      input = 'https://api.spotify.com' + input;
 
-    Object.assign(init, {
-      headers: { Authorization: token },
-    });
-    return fetch(input, init)
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          if (data.error.status === 401) {
-            setToken(null);
+      Object.assign(init, {
+        headers: { Authorization: token },
+      });
+      return fetch(input, init)
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            if (data.error.status === 401) {
+              setToken(null);
+            }
+
+            throw new SpotifyError(data.error);
           }
 
-          throw new SpotifyError(data.error);
-        }
-
-        return data;
-      });
-  };
+          return data;
+        });
+    },
+    [setToken, token],
+  );
 
   return { login, logout, authFetch, isAuthenticated: Boolean(token) };
 }

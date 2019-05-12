@@ -30,7 +30,7 @@ export function useSpotifyProfile(userId = 'me') {
         .then(setProfileData)
         .catch(console.error);
     }
-  }, [isAuthenticated, userId]);
+  }, [isAuthenticated, userId, authFetch]);
 
   return [profileData];
 }
