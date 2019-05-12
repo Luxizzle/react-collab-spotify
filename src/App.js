@@ -1,24 +1,17 @@
+// @ts-nocheck
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Index } from './routes/Index';
+import { Router } from '@reach/router';
+import { AuthPath, AUTH_CALLBACK_PATH } from './hooks/spotify/useSpotifyAuth';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="bp3-dark">
+      <Router>
+        <Index path="/" />
+
+        <AuthPath path={AUTH_CALLBACK_PATH} />
+      </Router>
     </div>
   );
 }
