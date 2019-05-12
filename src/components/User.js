@@ -3,7 +3,6 @@ import { H3 } from '@blueprintjs/core';
 import './User.scss';
 
 /**
- *
  * @param {Object} props
  * @param {string} [props.imageUrl]
  * @param {string} props.username
